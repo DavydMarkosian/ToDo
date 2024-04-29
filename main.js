@@ -7,7 +7,6 @@ let btnUpdate = document.getElementById('btnUpdate')
 btn.addEventListener('click', addToListFn)
 btnUpdate.addEventListener('click', updateFn)
 
-
 let key = 'keyOfArray'
 
 let arrayOfTasks = []
