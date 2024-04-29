@@ -5,7 +5,7 @@ let ol = document.getElementById('ol')
 let btnUpdate = document.getElementById('btnUpdate')
 
 btn.addEventListener('click', addToListFn)
-btnUpdate.addEventListener('click',updateFn)
+btnUpdate.addEventListener('click', updateFn)
 
 
 let key = 'keyOfArray'
@@ -16,27 +16,28 @@ getFn()
 drawTasksFn()
 
 function addToListFn() {
-    divList.classList.add('divList')
-    let task = input.value
-    let li = document.createElement('li')
-    let check = document.createElement('input')
-    check.classList.add('checkBox')
+    if (input.value){
+        divList.classList.add('divList')
+        let task = input.value
+        let li = document.createElement('li')
+        let check = document.createElement('input')
+        check.classList.add('checkBox')
 
-    check.type = 'checkbox'
-    ol.appendChild(li)
-    li.innerText = task.slice(0, 1).toUpperCase() + task.slice(1);
-    li.appendChild(check)
-    arrayOfTasks.push({task})
-    setFn()
-    input.value = ''
+        check.type = 'checkbox'
+        ol.appendChild(li)
+        li.innerText = task.slice(0, 1).toUpperCase() + task.slice(1);
+        li.appendChild(check)
+        arrayOfTasks.push({task})
+        setFn()
+        input.value = ''
+    }
 }
-function drawTasksFn(){
+
+function drawTasksFn() {
     divList.classList.add('divList')
     let arr = JSON.parse(localStorage.getItem(key));
-    console.log(arr)
 
     for (const task of arr) {
-        console.log(task.task)
         let li = document.createElement('li')
         let check = document.createElement('input')
         check.classList.add('checkBox')
@@ -48,23 +49,28 @@ function drawTasksFn(){
 }
 
 function setFn() {
-    localStorage.setItem(key,JSON.stringify(arrayOfTasks))
+    localStorage.setItem(key, JSON.stringify(arrayOfTasks))
 }
 
 function getFn() {
-    arrayOfTasks=JSON.parse(localStorage.getItem(key))||[]
+    arrayOfTasks = JSON.parse(localStorage.getItem(key)) || []
 }
 
-function updateFn(){
+function updateFn() {
     let checkBoxes = document.querySelectorAll('.checkBox')
     for (const checkBox of checkBoxes) {
-        if (checkBox.checked){
-            console.log(checkBox)
+        if (checkBox.checked) {
             let liChecked = checkBox.parentElement
-            console.log(liChecked)
             liChecked.remove()
             let arr = JSON.parse(localStorage.getItem(key))
-            console.log(arr)
+            let content = liChecked.innerText
+            let indexToDelete =  arr.findIndex(item=>item.task.toLowerCase()===content.toLowerCase())
+            if (indexToDelete!==-1){
+                arr.splice(indexToDelete,1)
+            }
+            localStorage.setItem(key,JSON.stringify(arr))
+            arrayOfTasks=arr
+
         }
     }
 }
